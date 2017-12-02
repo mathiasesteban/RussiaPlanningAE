@@ -42,8 +42,25 @@ public class PlanningProblem extends Problem {
     @Override
     public void evaluate(Solution solution) throws JMException {
         
-        // DO NOTHING
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        double eval_costo = 1;
+        double eval_punt = 1;
+        
+        solution.setObjective(0,eval_costo);
+        solution.setObjective(1,eval_punt);
+        
     }
     
+    
+    public double evaluacion_costo(Solution solution){
+        double res = 1;
+        
+        return res;
+        
+    }
+    
+    public double evaluacion_puntaje(Solution solution){
+        double res = 1;
+        
+        return res;
+    }
 }
