@@ -154,7 +154,8 @@ public class PlanningProblem extends Problem {
     } // Fin evaluacion_costo
     
     
-    public double eval_costo_viaje(){
+    public double eval_costo_viaje()
+    {
         double costo = 0;
         
         // Falta
@@ -162,7 +163,8 @@ public class PlanningProblem extends Problem {
         return costo;
     } // Fin eval_costo_viaje
     
-    public double eval_costo_estadia(){
+    public double eval_costo_estadia()
+    {
         double costo = 0;
         
         // Falta
@@ -172,11 +174,71 @@ public class PlanningProblem extends Problem {
     
     
     
-    public double evaluacion_puntaje(Solution solution){
-        double res = 1;
-        
-        // Falta
-        
-        return res;
+    public double evaluacion_puntaje(Solution solution) throws JMException
+    {
+        double puntaje = 0;
+        /* el puntaje es una combinacion de 3 variables que involucra la relevancia de los partidos a
+        los que se asiste, la cantidad de partidos y la categoria de entrada de cada paritido al 
+        que se asiste*/
+        double pesoRelevancia = 0.4;
+        double pesoCantPartidos = 0.4;
+        double [] cantCats = new double[3];
+        double [] pesoCantCats = {0.2,0.3,0.5};
+        double cantPartidos = 0;
+        //double relevancia [] = new double [6];
+        //ver el tema de las ponderaciones 
+        double relevancia = 0;
+        int cantVar = this.numberOfVariables_;
+        Variable [] variables = solution.getDecisionVariables();
+        for (int i = 0; i< cantVar; i++)
+        {
+            if (variables[i].getValue() != 0){
+                cantPartidos ++;
+                if (variables[i].getValue() == 1){
+                    cantCats[0]++;
+                    relevancia += relevancia(i);
+                    
+                }
+                else if (variables[i].getValue() == 2){
+                    cantCats[1]++;
+                    relevancia += relevancia(i);
+                }
+                else {
+                    cantCats[2]++;
+                    relevancia += relevancia(i);
+                }
+            }
+            else{
+                continue;
+            }
+        }
+        puntaje = cantPartidos*pesoCantPartidos + relevancia*pesoRelevancia + cantCats[0]*pesoCantCats[0] + cantCats[1]*pesoCantCats[1] +cantCats[2]*pesoCantCats[2];
+        return puntaje;
     } // Fin evaluacion_puntaje
+    
+    public double relevancia (double posicion)
+    {
+        double relevancia = 0;
+        if(posicion >=0 && posicion < 48){
+            relevancia = 1; 
+        }
+        else if (posicion >=48 && posicion < 55){
+            relevancia = 2;
+        }
+        else if (posicion >= 55 && posicion < 59){
+            relevancia = 3;
+        }
+        else if (posicion >= 59 && posicion < 61){
+            relevancia = 4;
+        }
+        else if (posicion >= 61 && posicion < 62){
+            //partido por el 3er 
+            relevancia = 3;
+        }
+        else{
+            //es la final papa!! el suenio de todo el mundo
+            relevancia = 20;
+        }
+        return relevancia;
+    }
 }
