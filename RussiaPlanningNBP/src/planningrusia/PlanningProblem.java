@@ -7,6 +7,7 @@ package planningrusia;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Calendar;
 import java.util.Scanner;
 import java.util.Vector;
 import jmetal.core.Problem;
@@ -30,13 +31,13 @@ public class PlanningProblem extends Problem {
     private int[] costo_estadia;
     
     // Fecha de realizacion del evento
-    private int[] fecha;
+    private Calendar[] fechas;
     
+    // Ciudades donde se realizan los eventos
+    private int[] ciudades;
+            
     // Costo viaje entre ciudades
     private int[][] costo_viaje;
-    
-    // Ciudades
-    private int[] ciudades;
     
     // Constructor
     public PlanningProblem(String pathToFile) throws FileNotFoundException{
@@ -84,14 +85,10 @@ public class PlanningProblem extends Problem {
         }
         
         solutionType_ = new IntSolutionType(this) ;
-        
         // --------------------------------------------------------------------
         
         
         // --------------------------- DATOS ----------------------------------
-        
-        
-       
         costo_entrada = new int[numberOfVariables][tipos_entrada];
         
         scanner.nextLine();
@@ -110,7 +107,6 @@ public class PlanningProblem extends Problem {
         
         for (int i =0; i<numberOfVariables; i++){
             costo_estadia[i] = scanner.nextInt();
-            
         }
         
         for (int j = 0; j < numberOfVariables; j++ ){
@@ -125,10 +121,29 @@ public class PlanningProblem extends Problem {
             System.out.println(costo_estadia[j]);
         }
         
+        fechas = new Calendar[numberOfVariables];
+        
+        scanner.nextLine();
+        scanner.nextLine();
+        
+        for (int i =0; i<numberOfVariables; i++){
+            fechas[i] = Calendar.getInstance();
+            fechas[i].set(Calendar.DAY_OF_MONTH,scanner.nextInt()-1);
+            fechas[i].set(Calendar.MONTH,scanner.nextInt()-1);
+            fechas[i].set(Calendar.YEAR,scanner.nextInt());
+            fechas[i].set(Calendar.HOUR_OF_DAY,scanner.nextInt());
+            fechas[i].set(Calendar.MINUTE,scanner.nextInt());
+        }
+        
+        for (int i =0; i<numberOfVariables; i++){
+            System.out.println(fechas[i].getTime());
+        }
+        
+        
+        
         // --------------------------------------------------------------------
    
     } // Fin constructor
-    
     
     @Override
     public void evaluate(Solution solution) throws JMException {
