@@ -134,10 +134,10 @@ public class PlanningProblem extends Problem {
     public void evaluate(Solution solution) throws JMException {
         
         double eval_costo = evaluacion_costo(solution);
-        double eval_punt = 1;
+        double eval_punt = evaluacion_puntaje(solution);
         
         solution.setObjective(0,eval_costo);
-        solution.setObjective(1,eval_punt);
+        solution.setObjective(1,-eval_punt);
         
     } // Fin evaluate
     
@@ -196,65 +196,120 @@ public class PlanningProblem extends Problem {
         /* el puntaje es una combinacion de 3 variables que involucra la relevancia de los partidos a
         los que se asiste, la cantidad de partidos y la categoria de entrada de cada paritido al 
         que se asiste*/
-        double pesoRelevancia = 0.4;
-        double pesoCantPartidos = 0.4;
-        double [] cantCats = new double[3];
-        double [] pesoCantCats = {0.2,0.3,0.5};
+        double pesoRelevancia = 0.7;
+        double pesoCantPartidos = 0.3;
         double cantPartidos = 0;
-        //double relevancia [] = new double [6];
-        //ver el tema de las ponderaciones 
         double relevancia = 0;
         int cantVar = this.numberOfVariables_;
+        double [][] relevanciaPartidos = new double[cantVar][3];
+        cargarRelevancia(relevanciaPartidos,cantVar,3);
+        // double [] cantCats = new double[3];
+        // double [] pesoCantCats = {0.5,0.3,0.2};
+        //double relevancia [] = new double [6];
+        //ver el tema de las ponderaciones     
         Variable [] variables = solution.getDecisionVariables();
         for (int i = 0; i< cantVar; i++)
         {
             if (variables[i].getValue() != 0){
                 cantPartidos ++;
                 if (variables[i].getValue() == 1){
-                    cantCats[0]++;
-                    relevancia += relevancia(i);
-                    
-                }
-                else if (variables[i].getValue() == 2){
-                    cantCats[1]++;
-                    relevancia += relevancia(i);
-                }
-                else {
-                    cantCats[2]++;
-                    relevancia += relevancia(i);
-                }
+                    int aux = (int) variables[i].getValue();
+                    relevancia += relevanciaPartidos[i][aux];
+                }               
             }
             else{
                 continue;
             }
         }
-        puntaje = cantPartidos*pesoCantPartidos + relevancia*pesoRelevancia + cantCats[0]*pesoCantCats[0] + cantCats[1]*pesoCantCats[1] +cantCats[2]*pesoCantCats[2];
+        puntaje = cantPartidos*pesoCantPartidos + relevancia*pesoRelevancia;
         return puntaje;
     } // Fin evaluacion_puntaje
     
-    public double relevancia (double posicion)
+    public void cargarRelevancia (double[][] matrizRelevancia,int largo,int ancho)
     {
-        double relevancia = 0;
-        if(posicion >=0 && posicion < 48){
-            relevancia = 1; 
+        for (int i = 0; i< largo; i++){
+            for (int j = 0; j< ancho; j++){
+                if(i == 0){
+                   if (j == 0){
+                       matrizRelevancia[i][j]= 100;
+                   }
+                   else if (j == 1){
+                       matrizRelevancia[i][j]= 125;
+                   }
+                   else{
+                       matrizRelevancia[i][j]= 150;
+                   }
+                }
+                else if(i >=1 && i < 48){
+                   if (j == 0){
+                       matrizRelevancia[i][j]= 80;
+                   }
+                   else if (j == 1){
+                       matrizRelevancia[i][j]= 100;
+                   }
+                   else{
+                       matrizRelevancia[i][j]= 120;
+                   }
+                }
+                else if (i >=48 && i < 56){
+                    if (j == 0){
+                       matrizRelevancia[i][j]= 300;
+                   }
+                   else if (j == 1){
+                       matrizRelevancia[i][j]= 370;
+                   }
+                   else{
+                       matrizRelevancia[i][j]= 450;
+                   }
+                }
+                else if (i >= 56 && i < 60){
+                    if (j == 0){
+                       matrizRelevancia[i][j]= 500;
+                   }
+                   else if (j == 1){
+                       matrizRelevancia[i][j]= 625;
+                   }
+                   else{
+                       matrizRelevancia[i][j]= 750;
+                   }
+                }
+                else if (i >= 60 && i < 62){
+                    if (j == 0){
+                       matrizRelevancia[i][j]= 750;
+                   }
+                   else if (j == 1){
+                       matrizRelevancia[i][j]= 900;
+                   }
+                   else{
+                       matrizRelevancia[i][j]= 1025;
+                   }
+                }
+                else if (i >= 62 && i < 63){
+                    //partido por el 3er 
+                    if (j == 0){
+                       matrizRelevancia[i][j]= 500;
+                   }
+                   else if (j == 1){
+                       matrizRelevancia[i][j]= 625;
+                   }
+                   else{
+                       matrizRelevancia[i][j]= 750;
+                   }
+                }
+                else{
+                    //es la final papa!! el suenio de todo el mundo
+                    if (j == 0){
+                       matrizRelevancia[i][j]= 1500;
+                   }
+                   else if (j == 1){
+                       matrizRelevancia[i][j]= 1800;
+                   }
+                   else{
+                       matrizRelevancia[i][j]= 2100;
+                   }
+                }
+            }
         }
-        else if (posicion >=48 && posicion < 55){
-            relevancia = 2;
-        }
-        else if (posicion >= 55 && posicion < 59){
-            relevancia = 3;
-        }
-        else if (posicion >= 59 && posicion < 61){
-            relevancia = 4;
-        }
-        else if (posicion >= 61 && posicion < 62){
-            //partido por el 3er 
-            relevancia = 3;
-        }
-        else{
-            //es la final papa!! el suenio de todo el mundo
-            relevancia = 20;
-        }
-        return relevancia;
     }
 }
+
