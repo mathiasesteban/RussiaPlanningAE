@@ -5,6 +5,9 @@
  */
 package planningrusia;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 import java.util.Vector;
 import jmetal.core.Problem;
 import jmetal.core.Solution;
@@ -36,13 +39,40 @@ public class PlanningProblem extends Problem {
     private int[] ciudades;
     
     // Constructor
-    public PlanningProblem(Integer numberOfVariables){
+    public PlanningProblem(String pathToFile) throws FileNotFoundException{
+        
+        Scanner scanner = new Scanner(new File(pathToFile));
+        
+        scanner.nextLine();
+        
+        // Leo el numero de variables
+        int numberOfVariables = scanner.nextInt();    
+        System.out.println(numberOfVariables);
+        
+        scanner.nextLine();
+        scanner.nextLine();
+        
+        // Leo los tipos de entradas que existen
+        int tipos_entrada = scanner.nextInt();
+        System.out.println(tipos_entrada);
+        
+        scanner.nextLine();
+        scanner.nextLine();
+        
+        int numberOfObjetives = scanner.nextInt();
+        System.out.println(numberOfObjetives);
+        
+        scanner.nextLine();
+        scanner.nextLine();
+        
+        int numberOfConstraints = scanner.nextInt();
+        System.out.println(numberOfConstraints);
         
         // ---------------------- DEFINICION DEL PROBLEMA ---------------------
         
         numberOfVariables_  = numberOfVariables;
-        numberOfObjectives_ =  2;
-        numberOfConstraints_=  0;
+        numberOfObjectives_ =  numberOfObjetives;
+        numberOfConstraints_=  numberOfConstraints;
         problemName_        = "PlanningProblem";
         
         upperLimit_ = new double[numberOfVariables_];
@@ -50,7 +80,7 @@ public class PlanningProblem extends Problem {
         
         for (int var = 0; var < numberOfVariables_; var++){
           lowerLimit_[var] = 0;
-          upperLimit_[var] = 3;
+          upperLimit_[var] = tipos_entrada;
         }
         
         solutionType_ = new IntSolutionType(this) ;
@@ -60,53 +90,39 @@ public class PlanningProblem extends Problem {
         
         // --------------------------- DATOS ----------------------------------
         
-        // Estas variables se leeran desde un archivo de configuracion
-        costo_entrada = new int[64][3];
         
-        for (int i =0; i<64; i++){
-            
-            if ( i == 0){
-                costo_entrada[i][0] = 550;
-                costo_entrada[i][1] = 390;
-                costo_entrada[i][2] = 220;
-            }
-            else if ( i>0 && i<48){
-                costo_entrada[i][0] = 210;
-                costo_entrada[i][1] = 165;
-                costo_entrada[i][2] = 105;
-            } 
-            else if (i>47 && i <56){
-                costo_entrada[i][0] = 245;
-                costo_entrada[i][1] = 185;
-                costo_entrada[i][2] = 115;
-            }
-            else if (i>55 && i <60){
-                costo_entrada[i][0] = 365;
-                costo_entrada[i][1] = 255;
-                costo_entrada[i][2] = 175;
-            }
-            else if (i>59 && i < 62){
-                costo_entrada[i][0] = 750;
-                costo_entrada[i][1] = 480;
-                costo_entrada[i][2] = 285;
-            }
-            else if ( i == 62){
-                costo_entrada[i][0] = 365;
-                costo_entrada[i][1] = 255;
-                costo_entrada[i][2] = 175;
-            }
-            else{
-                costo_entrada[i][0] = 1100;
-                costo_entrada[i][1] = 710;
-                costo_entrada[i][2] = 455;
+       
+        costo_entrada = new int[numberOfVariables][tipos_entrada];
+        
+        scanner.nextLine();
+        scanner.nextLine();
+        
+        for (int j = 0; j < numberOfVariables; j++ ){
+            for(int k = 0; k < tipos_entrada ; k++){
+                costo_entrada[j][k] = scanner.nextInt();
             }
         }
         
-        costo_estadia = new int[64];
+        scanner.nextLine();
+        scanner.nextLine();
         
-        for (int i =0; i<64; i++){
-            costo_estadia[i] = 100;
+        costo_estadia = new int[numberOfVariables];
+        
+        for (int i =0; i<numberOfVariables; i++){
+            costo_estadia[i] = scanner.nextInt();
             
+        }
+        
+        for (int j = 0; j < numberOfVariables; j++ ){
+            for(int k = 0; k < tipos_entrada ; k++){
+                System.out.print(costo_entrada[j][k]);
+                System.out.print(" ");
+            }
+            System.out.println("");
+        }
+        
+        for (int j = 0; j < numberOfVariables; j++ ){
+            System.out.println(costo_estadia[j]);
         }
         
         // --------------------------------------------------------------------

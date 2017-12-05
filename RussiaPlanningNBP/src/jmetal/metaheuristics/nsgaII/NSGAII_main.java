@@ -109,7 +109,7 @@ public class NSGAII_main {
       //problem = new OKA2("Real") ;
     } // else*/
     
-    problem = new PlanningProblem(64);
+    problem = new PlanningProblem("datos.config");
     
     algorithm = new NSGAII(problem);
     //algorithm = new ssNSGAII(problem);
