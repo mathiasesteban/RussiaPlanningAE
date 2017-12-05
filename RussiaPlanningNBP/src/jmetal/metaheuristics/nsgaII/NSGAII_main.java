@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
+import planningrusia.PlanningProblem;
 
 /** 
  * Class to configure and execute the NSGA-II algorithm.  
@@ -83,8 +84,12 @@ public class NSGAII_main {
     logger_      = Configuration.logger_ ;
     fileHandler_ = new FileHandler("NSGAII_main.log"); 
     logger_.addHandler(fileHandler_) ;
-        
+    
+    
     indicators = null ;
+    
+    /* EL PROBLEMA ES FIJO: PlanningProblem
+    
     if (args.length == 1) {
       Object [] params = {"Real"};
       problem = (new ProblemFactory()).getProblem(args[0],params);
@@ -102,7 +107,9 @@ public class NSGAII_main {
       //problem = new ConstrEx("Real");
       //problem = new DTLZ1("Real");
       //problem = new OKA2("Real") ;
-    } // else
+    } // else*/
+    
+    problem = new PlanningProblem("datos.config");
     
     algorithm = new NSGAII(problem);
     //algorithm = new ssNSGAII(problem);
@@ -115,12 +122,12 @@ public class NSGAII_main {
     parameters = new HashMap() ;
     parameters.put("probability", 0.9) ;
     parameters.put("distributionIndex", 20.0) ;
-    crossover = CrossoverFactory.getCrossoverOperator("SBXCrossover", parameters);                   
+    crossover = CrossoverFactory.getCrossoverOperator("SinglePointCrossover", parameters);                   
 
     parameters = new HashMap() ;
     parameters.put("probability", 1.0/problem.getNumberOfVariables()) ;
     parameters.put("distributionIndex", 20.0) ;
-    mutation = MutationFactory.getMutationOperator("PolynomialMutation", parameters);                    
+    mutation = MutationFactory.getMutationOperator("BitFlipMutation", parameters);                    
 
     // Selection Operator 
     parameters = null ;
