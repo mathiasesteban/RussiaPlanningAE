@@ -34,41 +34,122 @@ public class PlanningProblem extends Problem {
     private Calendar[] fechas;
     
     // Ciudades donde se realizan los eventos
-    private int[] ciudades;
-            
+    private String[] ciudades;
+    
+    private int[] ciudad_partido;
+    
+    // Relevancias por tipo de entrada para cada partido
+    private int[][] relevanciaPartidos;
+    
     // Costo viaje entre ciudades
     private int[][] costo_viaje;
     
     // Constructor
     public PlanningProblem(String pathToFile) throws FileNotFoundException{
         
+        // -------------------------- CARGA DATOS -----------------------------
+        
         Scanner scanner = new Scanner(new File(pathToFile));
         
+        // Esta instruccion es utilizada para avanzar el cursor a la siguiente
+        // linea
         scanner.nextLine();
         
         // Leo el numero de variables
         int numberOfVariables = scanner.nextInt();    
-        System.out.println(numberOfVariables);
-        
+     
         scanner.nextLine();
         scanner.nextLine();
         
         // Leo los tipos de entradas que existen
         int tipos_entrada = scanner.nextInt();
-        System.out.println(tipos_entrada);
         
         scanner.nextLine();
         scanner.nextLine();
         
+        // Leo la cantidad de objetivos
         int numberOfObjetives = scanner.nextInt();
-        System.out.println(numberOfObjetives);
         
         scanner.nextLine();
         scanner.nextLine();
         
+        // Leo la cantidad de restricciones
         int numberOfConstraints = scanner.nextInt();
-        System.out.println(numberOfConstraints);
         
+        costo_entrada = new int[numberOfVariables][tipos_entrada];
+        
+        scanner.nextLine();
+        scanner.nextLine();
+        
+        // Leo los costos de las entradas para cada evento y para cada tipo 
+        for (int j = 0; j < numberOfVariables; j++ ){
+            for(int k = 0; k < tipos_entrada ; k++){
+                costo_entrada[j][k] = scanner.nextInt();
+            }
+        }
+        
+        scanner.nextLine();
+        scanner.nextLine();
+        
+        // Leo la cantidad de ciudades
+        int numberOfCities = scanner.nextInt();
+        
+        scanner.nextLine();
+        scanner.nextLine();
+        
+        ciudades = new String[numberOfCities];
+        
+        // Leo las ciudades donde ocurren los eventos
+        for (int i =0; i<numberOfCities; i++){
+            ciudades[i] = scanner.nextLine();
+        }
+        
+        scanner.nextLine();
+        
+        costo_estadia = new int[numberOfCities];
+        
+        // Leo los costos de alojamiento en cada ciudad
+        for (int i =0; i<numberOfCities; i++){
+            costo_estadia[i] = scanner.nextInt();
+        }
+         
+        fechas = new Calendar[numberOfVariables];
+        
+        scanner.nextLine();
+        scanner.nextLine();
+        
+        // Leo las fechas en las que se realizan los eventos
+        for (int i =0; i<numberOfVariables; i++){
+            fechas[i] = Calendar.getInstance();
+            fechas[i].set(Calendar.DAY_OF_MONTH,scanner.nextInt());
+            fechas[i].set(Calendar.MONTH,scanner.nextInt()-1);
+            fechas[i].set(Calendar.YEAR,scanner.nextInt());
+            fechas[i].set(Calendar.HOUR_OF_DAY,scanner.nextInt());
+            fechas[i].set(Calendar.MINUTE,scanner.nextInt());
+        }
+
+        scanner.nextLine();
+        scanner.nextLine();
+        
+        ciudad_partido = new int[numberOfVariables];
+        
+        // Leo las ciudades en las que se realizan los eventos
+        for (int i =0; i<numberOfVariables; i++){
+            ciudad_partido[i] = scanner.nextInt();
+        }
+        
+        scanner.nextLine();
+        scanner.nextLine();
+        
+        relevanciaPartidos = new int[numberOfVariables][tipos_entrada];
+        
+        for (int j = 0; j < numberOfVariables; j++ ){
+            for(int k = 0; k < tipos_entrada ; k++){
+                relevanciaPartidos[j][k] = scanner.nextInt();
+            }
+        }
+        
+             
         // ---------------------- DEFINICION DEL PROBLEMA ---------------------
         
         numberOfVariables_  = numberOfVariables;
@@ -85,61 +166,62 @@ public class PlanningProblem extends Problem {
         }
         
         solutionType_ = new IntSolutionType(this) ;
+        
         // --------------------------------------------------------------------
         
         
-        // --------------------------- DATOS ----------------------------------
-        costo_entrada = new int[numberOfVariables][tipos_entrada];
+        // --------------------------- PRINTS ---------------------------------
         
-        scanner.nextLine();
-        scanner.nextLine();
+        System.out.println();
+        System.out.println(" ----------- DATOS DEL PROBLEMA ------------ \n");
         
-        for (int j = 0; j < numberOfVariables; j++ ){
-            for(int k = 0; k < tipos_entrada ; k++){
-                costo_entrada[j][k] = scanner.nextInt();
-            }
-        }
+        System.out.println("Numero de eventos: " + numberOfVariables);
+        System.out.println("Tipos de entrada disponibles: " + tipos_entrada);
+        System.out.println("Numero de objetivos del problema: " + numberOfObjetives);
+        System.out.println("Numero de restricciones: " + numberOfConstraints);
         
-        scanner.nextLine();
-        scanner.nextLine();
+        System.out.println();
         
-        costo_estadia = new int[numberOfVariables];
-        
-        for (int i =0; i<numberOfVariables; i++){
-            costo_estadia[i] = scanner.nextInt();
-        }
+        System.out.println("Partido - Costo Entradas - Fecha - Ciudad - Relevancia entradas\n" );
         
         for (int j = 0; j < numberOfVariables; j++ ){
+            
+            System.out.print(j + " - ");
+            
             for(int k = 0; k < tipos_entrada ; k++){
                 System.out.print(costo_entrada[j][k]);
                 System.out.print(" ");
             }
-            System.out.println("");
+            
+            System.out.print(" - ");
+            
+            System.out.print(fechas[j].getTime());
+            
+            System.out.print(" - ");
+            
+            System.out.print(ciudad_partido[j]);
+            
+            System.out.print(" - ");
+            
+            for(int k = 0; k < tipos_entrada ; k++){
+                System.out.print(relevanciaPartidos[j][k]);
+                System.out.print(" ");
+            }
+            
+            System.out.println();
         }
         
-        for (int j = 0; j < numberOfVariables; j++ ){
-            System.out.println(costo_estadia[j]);
+        System.out.println();
+        System.out.println("Indice ciudad - Nombre Ciudad - Costo estadia\n");
+        
+        
+        for (int j = 0; j < numberOfCities; j++ ){
+            System.out.print(j + " - ");
+            System.out.print(ciudades[j] + " - ");
+            System.out.println( "USS " + costo_estadia[j]);
         }
         
-        fechas = new Calendar[numberOfVariables];
-        
-        scanner.nextLine();
-        scanner.nextLine();
-        
-        for (int i =0; i<numberOfVariables; i++){
-            fechas[i] = Calendar.getInstance();
-            fechas[i].set(Calendar.DAY_OF_MONTH,scanner.nextInt()-1);
-            fechas[i].set(Calendar.MONTH,scanner.nextInt()-1);
-            fechas[i].set(Calendar.YEAR,scanner.nextInt());
-            fechas[i].set(Calendar.HOUR_OF_DAY,scanner.nextInt());
-            fechas[i].set(Calendar.MINUTE,scanner.nextInt());
-        }
-        
-        for (int i =0; i<numberOfVariables; i++){
-            System.out.println(fechas[i].getTime());
-        }
-        
-        
+
         
         // --------------------------------------------------------------------
    
@@ -160,7 +242,7 @@ public class PlanningProblem extends Problem {
     public double evaluacion_costo(Solution solution){
         double costo = 0;
         
-        int last_city = -1;
+        int last_index = -1;
         
         Variable[] partidos = solution.getDecisionVariables();
         
@@ -171,12 +253,12 @@ public class PlanningProblem extends Problem {
             if(cat_entrada != 0){
                 costo += costo_entrada[i][cat_entrada-1];
                 
-                if(last_city != -1){
-                    costo += eval_costo_estadia();
+                if(last_index != -1){
+                    costo += eval_costo_estadia(i,last_index);
                     costo += eval_costo_viaje();
                 }
                 
-                last_city = i;
+                last_index = i;
             }
         }
         
@@ -194,13 +276,16 @@ public class PlanningProblem extends Problem {
         return costo;
     } // Fin eval_costo_viaje
     
-    public double eval_costo_estadia()
+    public double eval_costo_estadia(int partido, int partido_anterior)
     {
         double costo = 0;
         
-        // Falta
+        long seconds = (fechas[partido].getTimeInMillis() - fechas[partido_anterior].getTimeInMillis()) / 1000;
+        int days = (int) ((seconds / 3600)/24);
         
+        costo = days*costo_estadia[ciudad_partido[partido_anterior]];
         return costo;
+        
     } // Fin eval_costo_estadia
     
     
@@ -216,8 +301,7 @@ public class PlanningProblem extends Problem {
         double cantPartidos = 0;
         double relevancia = 0;
         int cantVar = this.numberOfVariables_;
-        double [][] relevanciaPartidos = new double[cantVar][3];
-        cargarRelevancia(relevanciaPartidos,cantVar,3);
+        
         // double [] cantCats = new double[3];
         // double [] pesoCantCats = {0.5,0.3,0.2};
         //double relevancia [] = new double [6];
