@@ -44,6 +44,9 @@ public class PlanningProblem extends Problem {
     // Costo viaje entre ciudades
     private int[][] costo_viaje;
     
+    private float pesoRelevancia;
+    private float pesoCantPartidos;
+    
     // Constructor
     public PlanningProblem(String pathToFile) throws FileNotFoundException{
         
@@ -149,6 +152,15 @@ public class PlanningProblem extends Problem {
             }
         }
         
+        scanner.nextLine();
+        scanner.nextLine();
+        
+        pesoRelevancia = (float) scanner.nextInt() / 10;
+        
+        scanner.nextLine();
+        scanner.nextLine();
+        
+        pesoCantPartidos = (float) scanner.nextInt() / 10;
              
         // ---------------------- DEFINICION DEL PROBLEMA ---------------------
         
@@ -221,7 +233,10 @@ public class PlanningProblem extends Problem {
             System.out.println( "USS " + costo_estadia[j]);
         }
         
-
+        System.out.println();
+        System.out.println("Peso de la relevancia del partido sobre el puntaje de la solucion: " + pesoRelevancia);
+        System.out.println();
+        System.out.println("Peso de la cantidad de partidos sobre el puntaje de la solucion: " + pesoCantPartidos);
         
         // --------------------------------------------------------------------
    
@@ -255,7 +270,7 @@ public class PlanningProblem extends Problem {
                 
                 if(last_index != -1){
                     costo += eval_costo_estadia(i,last_index);
-                    costo += eval_costo_viaje();
+                    costo += eval_costo_viaje(i,last_index);
                 }
                 
                 last_index = i;
@@ -267,7 +282,7 @@ public class PlanningProblem extends Problem {
     } // Fin evaluacion_costo
     
     
-    public double eval_costo_viaje()
+    public double eval_costo_viaje(int partido, int partido_anterior)
     {
         double costo = 0;
         
@@ -293,35 +308,38 @@ public class PlanningProblem extends Problem {
     public double evaluacion_puntaje(Solution solution) throws JMException
     {
         double puntaje = 0;
-        /* el puntaje es una combinacion de 3 variables que involucra la relevancia de los partidos a
-        los que se asiste, la cantidad de partidos y la categoria de entrada de cada paritido al 
-        que se asiste*/
-        double pesoRelevancia = 0.7;
-        double pesoCantPartidos = 0.3;
+        
+         
+        // El puntaje es una combinacion de 2 variables que involucra la 
+        // relevancia y la cantidad de partidos a los que asiste
+        
+        
         double cantPartidos = 0;
         double relevancia = 0;
         int cantVar = this.numberOfVariables_;
-        
-        // double [] cantCats = new double[3];
-        // double [] pesoCantCats = {0.5,0.3,0.2};
-        //double relevancia [] = new double [6];
-        //ver el tema de las ponderaciones     
+    
         Variable [] variables = solution.getDecisionVariables();
+        
+        // Recorro la solucion
         for (int i = 0; i< cantVar; i++)
         {
+            // Si asisto al evento influye en el puntaje
             if (variables[i].getValue() != 0){
+                
                 cantPartidos ++;
+                
                 if (variables[i].getValue() == 1){
                     int aux = (int) variables[i].getValue();
                     relevancia += relevanciaPartidos[i][aux];
-                }               
+                }            
+                
             }
-            else{
-                continue;
-            }
+            
         }
-        puntaje = cantPartidos*pesoCantPartidos + relevancia*pesoRelevancia;
+        
+        puntaje = cantPartidos * pesoCantPartidos + relevancia * pesoRelevancia;
         return puntaje;
+        
     } // Fin evaluacion_puntaje
     
     public void cargarRelevancia (double[][] matrizRelevancia,int largo,int ancho)
