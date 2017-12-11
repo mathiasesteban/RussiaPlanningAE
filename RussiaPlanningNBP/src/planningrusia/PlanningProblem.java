@@ -42,7 +42,10 @@ public class PlanningProblem extends Problem {
     private int[][] relevanciaPartidos;
     
     // Costo viaje entre ciudades
-    private int[][] costo_viaje;
+    private int[][] costos_viaje;
+    
+    // Tiempo vuelo entre ciudades (en horas)
+    private float[][] tiempos_viaje;
     
     private float pesoRelevancia;
     private float pesoCantPartidos;
@@ -161,6 +164,30 @@ public class PlanningProblem extends Problem {
         scanner.nextLine();
         
         pesoCantPartidos = (float) scanner.nextInt() / 10;
+        
+        scanner.nextLine();
+        scanner.nextLine();
+        
+        costos_viaje = new int[numberOfCities][numberOfCities];
+        
+        for (int i =0; i<numberOfCities; i++){
+            for (int j =0; j<numberOfCities; j++){
+                costos_viaje[i][j] = scanner.nextInt();
+            }
+        }
+        
+        scanner.nextLine();
+        scanner.nextLine();
+        
+        tiempos_viaje = new float[numberOfCities][numberOfCities];
+        
+        
+        for (int i =0; i<numberOfCities; i++){
+            for (int j =0; j<numberOfCities; j++){
+                tiempos_viaje[i][j] = scanner.nextFloat();
+            }
+        }
+        
              
         // ---------------------- DEFINICION DEL PROBLEMA ---------------------
         
@@ -237,6 +264,30 @@ public class PlanningProblem extends Problem {
         System.out.println("Peso de la relevancia del partido sobre el puntaje de la solucion: " + pesoRelevancia);
         System.out.println();
         System.out.println("Peso de la cantidad de partidos sobre el puntaje de la solucion: " + pesoCantPartidos);
+        System.out.println();
+        
+        
+        System.out.println("Matriz de costos de viaje: \n");
+        
+        for (int j = 0; j < numberOfCities; j++ ){
+            for (int i = 0; i < numberOfCities; i++ ){
+                System.out.print( costos_viaje[j][i] + " ");
+            }
+            
+            System.out.println();
+        }
+        
+        
+        System.out.println("\nMatriz de tiempos de viaje: \n");
+        
+        for (int j = 0; j < numberOfCities; j++ ){
+            for (int i = 0; i < numberOfCities; i++ ){
+                System.out.print( tiempos_viaje[j][i] + " ");
+            }
+            
+            System.out.println();
+        }
+        System.out.println("\n------------------------------------------\n");
         
         // --------------------------------------------------------------------
    

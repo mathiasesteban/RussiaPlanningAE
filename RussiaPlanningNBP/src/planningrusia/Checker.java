@@ -50,7 +50,7 @@ public class Checker {
     
     
     public void fix_solution(Solution sol){
-        System.out.println("Fixing");
+        // System.out.println("Fixing");
         // Nada por ahora
     }
     
