@@ -33,6 +33,7 @@ import jmetal.util.PseudoRandom;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import planningrusia.Checker;
 
 /**
  * This class implements a bit flip mutation operator.
@@ -88,6 +89,18 @@ public class BitFlipMutation extends Mutation {
 								(int)solution.getDecisionVariables()[i].getLowerBound(),
 								(int)solution.getDecisionVariables()[i].getUpperBound());
 						solution.getDecisionVariables()[i].setValue(value);
+                                                
+                                                
+                                                // CODIGO AGREGADO PARA REPARAR SOLUCIONES CORRUPTAS A CAUSA
+                                                // DEL CRUZAMIENTO DE UN PUNTO
+
+                                                Checker checker = new Checker();
+
+                                                boolean valido0 = checker.check_solution(solution);
+
+                                                if (!valido0){
+                                                    checker.fix_solution(solution);
+                                                }    
 					} // if
 			} // else
 		} catch (ClassCastException e1) {
