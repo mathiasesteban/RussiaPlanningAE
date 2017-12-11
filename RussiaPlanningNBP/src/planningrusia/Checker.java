@@ -5,6 +5,7 @@
  */
 package planningrusia;
 
+import java.util.Calendar;
 import jmetal.core.Problem;
 import jmetal.core.Solution;
 import jmetal.core.Variable;
@@ -39,14 +40,23 @@ public class Checker {
                     last_index = i;
                 }
                 else{
+                    float [] [] tiempos_viajes;
+                    tiempos_viajes = ((PlanningProblem)prob).getTiemposViaje();
+                    Calendar [] fechas_partidos;
+                    fechas_partidos = ((PlanningProblem) prob).getFechasPartidos();
+                    Calendar fecha_primer_partido = fechas_partidos[last_index];
+                    Calendar fecha_segundo_partido = fechas_partidos[i];
+                    fecha_primer_partido.add(Calendar.HOUR, 3);
+                    fecha_primer_partido.add(Calendar.MINUTE,(int)(tiempos_viajes[last_index][i])*60);
+                   
                     //si se cumple restriccion de tiempo
-//                    if () {
-//                        last_index = i;
-//                        prob.
-//                    }
-//                    else {
-//                        variables[i].setValue(0);
-//                    }
+                    if (fecha_primer_partido.compareTo(fecha_segundo_partido) < 0) {
+                        last_index = i;
+                    }
+                    //no cumple restriccion
+                    else {
+                        variables[i].setValue(0);
+                    }
                 }
                 
                 
