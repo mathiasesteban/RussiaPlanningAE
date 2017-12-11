@@ -33,6 +33,7 @@ import jmetal.util.PseudoRandom;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import planningrusia.Checker;
 
 /**
  * This class allows to apply a Single Point crossover operator using two parent
@@ -155,6 +156,26 @@ public class SinglePointCrossover extends Crossover {
             offSpring[0].getDecisionVariables()[i].setValue(valueX2);
             offSpring[1].getDecisionVariables()[i].setValue(valueX1);
           } // for
+          
+          
+          // CODIGO AGREGADO PARA REPARAR SOLUCIONES CORRUPTAS A CAUSA
+          // DEL CRUZAMIENTO DE UN PUNTO
+          
+          Checker checker = new Checker();
+          
+          boolean valido0 = checker.check_solution(offSpring[0]);
+          
+          if (!valido0){
+              checker.fix_solution(offSpring[0]);
+          }
+          
+          boolean valido1 = checker.check_solution(offSpring[1]);
+          
+          if (!valido1){
+              checker.fix_solution(offSpring[1]);
+          }
+          
+          
         } // Int representation
       }
     } catch (ClassCastException e1) {
