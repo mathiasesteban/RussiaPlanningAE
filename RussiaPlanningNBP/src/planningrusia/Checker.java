@@ -23,7 +23,7 @@ public class Checker {
     
     
     
-    public boolean check_solution(Solution sol) throws JMException{
+    public void fix_solution(Solution sol) throws JMException{
         
         Problem prob = sol.getProblem();
         
@@ -35,24 +35,33 @@ public class Checker {
             
             if(variables[i].getValue() != 0){
                 
-                if (last_index != 0){
-                    
+                if (last_index == -1){
+                    last_index = i;
+                }
+                else{
+                    //si se cumple restriccion de tiempo
+//                    if () {
+//                        last_index = i;
+//                        prob.
+//                    }
+//                    else {
+//                        variables[i].setValue(0);
+//                    }
                 }
                 
-                last_index = i;
                 
             }
             
         }
-            
-        return false;
-    } // Fin check
+
+    } // Fin fix
     
     
-    public void fix_solution(Solution sol){
-        System.out.println("Fixing");
-        // Nada por ahora
-    }
+//    public void fix_solution(Solution sol){
+//        System.out.println("Fixing");
+//        // Nada por ahora
+//        
+//    }
     
     
 }
