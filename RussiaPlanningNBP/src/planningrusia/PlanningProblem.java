@@ -335,9 +335,7 @@ public class PlanningProblem extends Problem {
     
     public double eval_costo_viaje(int partido, int partido_anterior)
     {
-        double costo = 0;
-        
-        // Falta
+        double costo = costos_viaje[ciudad_partido[partido_anterior]][ciudad_partido[partido]];
         
         return costo;
     } // Fin eval_costo_viaje
