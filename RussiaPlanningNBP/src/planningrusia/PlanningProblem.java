@@ -391,6 +391,10 @@ public class PlanningProblem extends Problem {
         
     } // Fin evaluacion_puntaje
     
+    public float[][] getTiemposViaje(){ 
+        return this.tiempos_viaje;
+    }
+    
     public void cargarRelevancia (double[][] matrizRelevancia,int largo,int ancho)
     {
         for (int i = 0; i< largo; i++){
