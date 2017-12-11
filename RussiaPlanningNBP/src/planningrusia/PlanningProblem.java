@@ -395,6 +395,10 @@ public class PlanningProblem extends Problem {
         return this.tiempos_viaje;
     }
     
+    public Calendar[] getFechasPartidos(){
+        return this.fechas;
+    }
+    
     public void cargarRelevancia (double[][] matrizRelevancia,int largo,int ancho)
     {
         for (int i = 0; i< largo; i++){
