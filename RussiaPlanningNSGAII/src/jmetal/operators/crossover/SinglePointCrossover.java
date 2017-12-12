@@ -158,14 +158,6 @@ public class SinglePointCrossover extends Crossover {
           } // for
           
           
-          // CODIGO AGREGADO PARA REPARAR SOLUCIONES CORRUPTAS A CAUSA
-          // DEL CRUZAMIENTO DE UN PUNTO
-          
-          Checker checker1 = new Checker();
-          Checker checker2 = new Checker();
-          checker1.fix_solution(offSpring[0]);
-          checker2.fix_solution(offSpring[1]);  
-          
         } // Int representation
       }
     } catch (ClassCastException e1) {

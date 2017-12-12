@@ -91,12 +91,6 @@ public class BitFlipMutation extends Mutation {
 						solution.getDecisionVariables()[i].setValue(value);
                                                 
                                                 
-                                                // CODIGO AGREGADO PARA REPARAR SOLUCIONES CORRUPTAS A CAUSA
-                                                // DEL CRUZAMIENTO DE UN PUNTO
-
-                                                Checker checker = new Checker();
-
-                                                checker.fix_solution(solution);
 
 					} // if
 			} // else

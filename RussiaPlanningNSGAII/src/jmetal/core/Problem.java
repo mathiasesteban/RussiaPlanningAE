@@ -24,6 +24,7 @@ package jmetal.core;
 import jmetal.util.JMException;
 
 import java.io.Serializable;
+import planningrusia.Checker;
 
 /**
  * Abstract class representing a multiobjective optimization problem
@@ -164,6 +165,11 @@ public abstract class Problem implements Serializable {
   public void evaluateConstraints(Solution solution) throws JMException {
     // The default behavior is to do nothing. Only constrained problems have to
     // re-define this method
+    
+    Checker checker = new Checker();
+    checker.fix_solution(solution);
+    this.evaluate(solution);
+    
   } // evaluateConstraints
 
   /**
