@@ -161,20 +161,10 @@ public class SinglePointCrossover extends Crossover {
           // CODIGO AGREGADO PARA REPARAR SOLUCIONES CORRUPTAS A CAUSA
           // DEL CRUZAMIENTO DE UN PUNTO
           
-          Checker checker = new Checker();
-          
-          boolean valido0 = checker.check_solution(offSpring[0]);
-          
-          if (!valido0){
-              checker.fix_solution(offSpring[0]);
-          }
-          
-          boolean valido1 = checker.check_solution(offSpring[1]);
-          
-          if (!valido1){
-              checker.fix_solution(offSpring[1]);
-          }
-          
+          Checker checker1 = new Checker();
+          Checker checker2 = new Checker();
+          checker1.fix_solution(offSpring[0]);
+          checker2.fix_solution(offSpring[1]);  
           
         } // Int representation
       }

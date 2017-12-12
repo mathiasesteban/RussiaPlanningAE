@@ -399,6 +399,10 @@ public class PlanningProblem extends Problem {
         return this.fechas;
     }
     
+    public int[] getCiudadesPartidos(){
+        return this.ciudad_partido;
+    }
+    
     public void cargarRelevancia (double[][] matrizRelevancia,int largo,int ancho)
     {
         for (int i = 0; i< largo; i++){

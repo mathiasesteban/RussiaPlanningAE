@@ -5,6 +5,7 @@
  */
 package planningrusia;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import jmetal.core.Problem;
 import jmetal.core.Solution;
@@ -19,11 +20,9 @@ public class Checker {
     
     
     // Constructor
-    
     public Checker(){}
     
-    
-    
+    // Fix Solution
     public void fix_solution(Solution sol) throws JMException{
         
         Problem prob = sol.getProblem();
@@ -31,6 +30,18 @@ public class Checker {
         Variable[] variables = sol.getDecisionVariables();
         
         int last_index = -1;
+        
+        // Necesario hacer copia de los array, si se trabaja con referencias
+        // queda inconsistente el problema
+        
+        float [][] tiempos_viajes;
+        tiempos_viajes = Arrays.copyOf(((PlanningProblem)prob).getTiemposViaje(),((PlanningProblem)prob).getTiemposViaje().length);
+       
+        Calendar [] fechas_partidos;
+        fechas_partidos = Arrays.copyOf(((PlanningProblem)prob).getFechasPartidos(),((PlanningProblem)prob).getFechasPartidos().length);
+        
+        int [] ciudades_partidos;
+        ciudades_partidos = Arrays.copyOf(((PlanningProblem)prob).getCiudadesPartidos(),((PlanningProblem)prob).getCiudadesPartidos().length);
         
         for (int i = 0; i< sol.numberOfVariables(); i++){
             
@@ -40,14 +51,15 @@ public class Checker {
                     last_index = i;
                 }
                 else{
-                    float [] [] tiempos_viajes;
-                    tiempos_viajes = ((PlanningProblem)prob).getTiemposViaje();
-                    Calendar [] fechas_partidos;
-                    fechas_partidos = ((PlanningProblem) prob).getFechasPartidos();
-                    Calendar fecha_primer_partido = fechas_partidos[last_index];
-                    Calendar fecha_segundo_partido = fechas_partidos[i];
+                    Calendar fecha_primer_partido = (Calendar) fechas_partidos[last_index].clone();
+                    Calendar fecha_segundo_partido = (Calendar) fechas_partidos[i].clone();
+                    
                     fecha_primer_partido.add(Calendar.HOUR, 3);
-                    fecha_primer_partido.add(Calendar.MINUTE,(int)(tiempos_viajes[last_index][i])*60);
+                    
+                    int ciudad_lastindex = ciudades_partidos[last_index] ;
+                    int ciudad_i = ciudades_partidos[i];
+                    
+                    fecha_primer_partido.add(Calendar.MINUTE,(int)(tiempos_viajes[ciudad_lastindex][ciudad_i])*60);
                    
                     //si se cumple restriccion de tiempo
                     if (fecha_primer_partido.compareTo(fecha_segundo_partido) < 0) {
@@ -63,15 +75,6 @@ public class Checker {
             }
             
         }
-
     } // Fin fix
-    
-    
-//    public void fix_solution(Solution sol){
-//        System.out.println("Fixing");
-//        // Nada por ahora
-//        
-//    }
-
-    
+      
 }

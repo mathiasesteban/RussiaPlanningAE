@@ -96,11 +96,8 @@ public class BitFlipMutation extends Mutation {
 
                                                 Checker checker = new Checker();
 
-                                                boolean valido0 = checker.check_solution(solution);
+                                                checker.fix_solution(solution);
 
-                                                if (!valido0){
-                                                    checker.fix_solution(solution);
-                                                }    
 					} // if
 			} // else
 		} catch (ClassCastException e1) {
