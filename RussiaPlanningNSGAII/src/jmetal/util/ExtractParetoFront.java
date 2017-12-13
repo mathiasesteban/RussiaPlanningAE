@@ -178,7 +178,7 @@ public class ExtractParetoFront {
 	}
 
 	public static void main(String [] args) {
-		if (args.length != 2) {
+		/*if (args.length != 2) {
 			System.out.println("Wrong number of arguments: ");
 			System.out.println("Sintaxt: java ExtractParetoFront <file> <dimensions>");
 			System.out.println("\t<file> is a file containing points");
@@ -186,7 +186,9 @@ public class ExtractParetoFront {
 			System.exit(-1) ;
 		}
 
-		ExtractParetoFront epf = new ExtractParetoFront(args[0], new Integer(args[1]));
+		ExtractParetoFront epf = new ExtractParetoFront(args[0], new Integer(args[1]));*/
+                ExtractParetoFront epf = new ExtractParetoFront("front", 2);
+
 
 		epf.writeParetoFront();
 	}
