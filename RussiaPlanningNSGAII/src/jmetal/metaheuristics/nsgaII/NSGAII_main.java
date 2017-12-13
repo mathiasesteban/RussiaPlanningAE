@@ -116,7 +116,7 @@ public class NSGAII_main {
 
     // Algorithm parameters
     algorithm.setInputParameter("populationSize",100);
-    algorithm.setInputParameter("maxEvaluations",25000);
+    algorithm.setInputParameter("maxEvaluations",10000);
 
     // Mutation and Crossover for Real codification 
     parameters = new HashMap() ;
