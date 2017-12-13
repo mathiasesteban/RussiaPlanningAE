@@ -8,3 +8,5 @@
 /RussiaPlanningInstanceGen/build/
 /RussiaPlanningGreedy/nbproject/private/
 /RussiaPlanningGreedy/build/
+/RussiaPlanningNSGAII/*.png
+/RussiaPlanningGreedy/*.png
