@@ -9,46 +9,41 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Calendar;
 import java.util.Scanner;
-import java.util.Vector;
-import jmetal.core.Problem;
-import jmetal.core.Solution;
-import jmetal.core.Variable;
-import jmetal.encodings.solutionType.ArrayIntSolutionType;
-import jmetal.encodings.solutionType.IntSolutionType;
-import jmetal.encodings.variable.Int;
-import jmetal.util.JMException;
+
 
 /**
  *
  * @author mathias
  */
-public class PlanningProblem extends Problem {
+public class PlanningProblem {
     
     // Costo de las entradas por categorias
-    private int[][] costo_entrada;
+    private final int[][] costo_entrada;
     
     // Costo de la estadia en la ciudad donde se realiza el evento
-    private int[] costo_estadia;
+    private final int[] costo_estadia;
     
     // Fecha de realizacion del evento
-    private Calendar[] fechas;
+    private final Calendar[] fechas;
     
     // Ciudades donde se realizan los eventos
-    private String[] ciudades;
+    private final String[] ciudades;
     
-    private int[] ciudad_partido;
+    private final int[] ciudad_partido;
     
     // Relevancias por tipo de entrada para cada partido
-    private int[][] relevanciaPartidos;
+    private final int[][] relevanciaPartidos;
     
     // Costo viaje entre ciudades
-    private int[][] costos_viaje;
+    private final int[][] costos_viaje;
     
     // Tiempo vuelo entre ciudades (en horas)
-    private float[][] tiempos_viaje;
+    private final float[][] tiempos_viaje;
     
-    private float pesoRelevancia;
-    private float pesoCantPartidos;
+    private final float pesoRelevancia;
+    private final float pesoCantPartidos;
+    private final int criterio;
+    private final int tamSol;
     
     // Constructor
     public PlanningProblem(String pathToFile) throws FileNotFoundException{
@@ -62,7 +57,8 @@ public class PlanningProblem extends Problem {
         scanner.nextLine();
         
         // Leo el numero de variables
-        int numberOfVariables = scanner.nextInt();    
+        int numberOfVariables = scanner.nextInt();
+        tamSol = numberOfVariables;
      
         scanner.nextLine();
         scanner.nextLine();
@@ -188,25 +184,11 @@ public class PlanningProblem extends Problem {
             }
         }
         
-             
-        // ---------------------- DEFINICION DEL PROBLEMA ---------------------
+        scanner.nextLine();
+        scanner.nextLine();
         
-        numberOfVariables_  = numberOfVariables;
-        numberOfObjectives_ =  numberOfObjetives;
-        numberOfConstraints_=  numberOfConstraints;
-        problemName_        = "PlanningProblem";
+        criterio = scanner.nextInt();
         
-        upperLimit_ = new double[numberOfVariables_];
-        lowerLimit_ = new double[numberOfVariables_];
-        
-        for (int var = 0; var < numberOfVariables_; var++){
-          lowerLimit_[var] = 0;
-          upperLimit_[var] = tipos_entrada;
-        }
-        
-        solutionType_ = new IntSolutionType(this) ;
-        
-        // --------------------------------------------------------------------
         
         
         // --------------------------- PRINTS ---------------------------------
@@ -287,104 +269,13 @@ public class PlanningProblem extends Problem {
             
             System.out.println();
         }
+        System.out.println(criterio);
         System.out.println("\n------------------------------------------\n");
         
         // --------------------------------------------------------------------
    
     } // Fin constructor
     
-    @Override
-    public void evaluate(Solution solution) throws JMException {
-        
-        double eval_costo = evaluacion_costo(solution);
-        double eval_punt = evaluacion_puntaje(solution);
-        
-        solution.setObjective(0,eval_costo);
-        solution.setObjective(1,-eval_punt);
-        
-    } // Fin evaluate
-    
-    
-    public double evaluacion_costo(Solution solution){
-        double costo = 0;
-        
-        int last_index = -1;
-        
-        Variable[] partidos = solution.getDecisionVariables();
-        
-        for (int i = 0; i< numberOfVariables_;i++){
-            
-            int cat_entrada = (int)((Int)partidos[i]).getValue(); 
-            
-            if(cat_entrada != 0){
-                costo += costo_entrada[i][cat_entrada-1];
-                
-                if(last_index != -1){
-                    costo += eval_costo_estadia(i,last_index);
-                    costo += eval_costo_viaje(i,last_index);
-                }
-                
-                last_index = i;
-            }
-        }
-        
-        return costo;
-        
-    } // Fin evaluacion_costo
-    
-    
-    public double eval_costo_viaje(int partido, int partido_anterior)
-    {
-        double costo = costos_viaje[ciudad_partido[partido_anterior]][ciudad_partido[partido]];
-        
-        return costo;
-    } // Fin eval_costo_viaje
-    
-    public double eval_costo_estadia(int partido, int partido_anterior)
-    {
-        double costo = 0;
-        
-        long seconds = (fechas[partido].getTimeInMillis() - fechas[partido_anterior].getTimeInMillis()) / 1000;
-        int days = (int) ((seconds / 3600)/24);
-        
-        costo = days*costo_estadia[ciudad_partido[partido_anterior]];
-        return costo;
-        
-    } // Fin eval_costo_estadia
-    
-    
-    
-    public double evaluacion_puntaje(Solution solution) throws JMException
-    {
-        double puntaje = 0;
-         
-        // El puntaje es una combinacion de 2 variables que involucra la 
-        // relevancia y la cantidad de partidos a los que asiste      
-        
-        double cantPartidos = 0;
-        double relevancia = 0;
-        int cantVar = this.numberOfVariables_;
-    
-        Variable [] variables = solution.getDecisionVariables();
-        
-        // Recorro la solucion
-        for (int i = 0; i< cantVar; i++)
-        {
-            // Si asisto al evento influye en el puntaje
-            if (variables[i].getValue() != 0){
-                
-                cantPartidos ++;
-                int aux = (int) variables[i].getValue();
-                relevancia += relevanciaPartidos[i][aux];            
-                
-            }
-            
-        }
-        
-        puntaje = cantPartidos * pesoCantPartidos + relevancia * pesoRelevancia;
-        return puntaje;
-        
-    } // Fin evaluacion_puntaje
     
     public float[][] getTiemposViaje(){ 
         return this.tiempos_viaje;
@@ -398,91 +289,37 @@ public class PlanningProblem extends Problem {
         return this.ciudad_partido;
     }
     
-    public void cargarRelevancia (double[][] matrizRelevancia,int largo,int ancho)
-    {
-        for (int i = 0; i< largo; i++){
-            for (int j = 0; j< ancho; j++){
-                if(i == 0){
-                   if (j == 0){
-                       matrizRelevancia[i][j]= 100;
-                   }
-                   else if (j == 1){
-                       matrizRelevancia[i][j]= 125;
-                   }
-                   else{
-                       matrizRelevancia[i][j]= 150;
-                   }
-                }
-                else if(i >=1 && i < 48){
-                   if (j == 0){
-                       matrizRelevancia[i][j]= 80;
-                   }
-                   else if (j == 1){
-                       matrizRelevancia[i][j]= 100;
-                   }
-                   else{
-                       matrizRelevancia[i][j]= 120;
-                   }
-                }
-                else if (i >=48 && i < 56){
-                    if (j == 0){
-                       matrizRelevancia[i][j]= 300;
-                   }
-                   else if (j == 1){
-                       matrizRelevancia[i][j]= 370;
-                   }
-                   else{
-                       matrizRelevancia[i][j]= 450;
-                   }
-                }
-                else if (i >= 56 && i < 60){
-                    if (j == 0){
-                       matrizRelevancia[i][j]= 500;
-                   }
-                   else if (j == 1){
-                       matrizRelevancia[i][j]= 625;
-                   }
-                   else{
-                       matrizRelevancia[i][j]= 750;
-                   }
-                }
-                else if (i >= 60 && i < 62){
-                    if (j == 0){
-                       matrizRelevancia[i][j]= 750;
-                   }
-                   else if (j == 1){
-                       matrizRelevancia[i][j]= 900;
-                   }
-                   else{
-                       matrizRelevancia[i][j]= 1025;
-                   }
-                }
-                else if (i >= 62 && i < 63){
-                    //partido por el 3er 
-                    if (j == 0){
-                       matrizRelevancia[i][j]= 500;
-                   }
-                   else if (j == 1){
-                       matrizRelevancia[i][j]= 625;
-                   }
-                   else{
-                       matrizRelevancia[i][j]= 750;
-                   }
-                }
-                else{
-                    //es la final papa!! el suenio de todo el mundo
-                    if (j == 0){
-                       matrizRelevancia[i][j]= 1500;
-                   }
-                   else if (j == 1){
-                       matrizRelevancia[i][j]= 1800;
-                   }
-                   else{
-                       matrizRelevancia[i][j]= 2100;
-                   }
-                }
-            }
-        }
+    public int getTamanioSolucion(){
+        return this.tamSol;
     }
+    
+    public int getCriterio(){
+        return this.criterio;
+    }
+    
+    public int[][] getCostosEntradas(){
+        return this.costo_entrada;
+    }
+    
+    public float getPesoRelevancia(){
+        return this.pesoRelevancia;
+    }
+    
+    public float getPesoCantPartidos(){
+        return this.pesoCantPartidos;
+    }
+    
+    public int [] getCostosEstadia(){
+        return this.costo_estadia;
+    }
+    
+    public int [] [] getCostosViajes(){
+        return this.costos_viaje;
+    }
+    
+    public int [] [] getRelevanciaPartidos(){
+        return this.relevanciaPartidos;
+    }
+    
 }
 
