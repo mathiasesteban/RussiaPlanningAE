@@ -375,7 +375,7 @@ public class PlanningProblem extends Problem {
                 
                 cantPartidos ++;
                 int aux = (int) variables[i].getValue();
-                relevancia += relevanciaPartidos[i][aux];            
+                relevancia += relevanciaPartidos[i][aux-1];            
                 
             }
             
