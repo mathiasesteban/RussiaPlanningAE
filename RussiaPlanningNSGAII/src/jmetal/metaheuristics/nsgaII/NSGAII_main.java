@@ -35,6 +35,9 @@ import jmetal.util.Configuration;
 import jmetal.util.JMException;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
@@ -70,99 +73,155 @@ public class NSGAII_main {
                                   SecurityException, 
                                   IOException, 
                                   ClassNotFoundException {
-    Problem   problem   ; // The problem to solve
-    Algorithm algorithm ; // The algorithm to use
-    Operator  crossover ; // Crossover operator
-    Operator  mutation  ; // Mutation operator
-    Operator  selection ; // Selection operator
-    
-    HashMap  parameters ; // Operator parameters
-    
-    QualityIndicator indicators ; // Object to get quality indicators
-
-    // Logger object and file to store log messages
-    logger_      = Configuration.logger_ ;
-    fileHandler_ = new FileHandler("NSGAII_main.log"); 
-    logger_.addHandler(fileHandler_) ;
-    
-    
-    indicators = null ;
-    
-    /* EL PROBLEMA ES FIJO: PlanningProblem
-    
-    if (args.length == 1) {
-      Object [] params = {"Real"};
-      problem = (new ProblemFactory()).getProblem(args[0],params);
-    } // if
-    else if (args.length == 2) {
-      Object [] params = {"Real"};
-      problem = (new ProblemFactory()).getProblem(args[0],params);
-      indicators = new QualityIndicator(problem, args[1]) ;
-    } // if
-    else { // Default problem
-      //problem = new Kursawe("Real", 3);
-      //problem = new Kursawe("BinaryReal", 3);
-      //problem = new Water("Real");
-      problem = new ZDT3("ArrayReal", 30);
-      //problem = new ConstrEx("Real");
-      //problem = new DTLZ1("Real");
-      //problem = new OKA2("Real") ;
-    } // else*/
-    
-    problem = new PlanningProblem("datos.config");
-    
-    algorithm = new NSGAII(problem);
-    //algorithm = new ssNSGAII(problem);
-
-    // Algorithm parameters
-    algorithm.setInputParameter("populationSize",100);
-    algorithm.setInputParameter("maxEvaluations",10000);
-
-    // Mutation and Crossover for Real codification 
-    parameters = new HashMap() ;
-    parameters.put("probability", 0.9) ;
-    parameters.put("distributionIndex", 20.0) ;
-    crossover = CrossoverFactory.getCrossoverOperator("SinglePointCrossover", parameters);                   
-
-    parameters = new HashMap() ;
-    parameters.put("probability", 1.0/problem.getNumberOfVariables()) ;
-    parameters.put("distributionIndex", 20.0) ;
-    mutation = MutationFactory.getMutationOperator("BitFlipMutation", parameters);                    
-
-    // Selection Operator 
-    parameters = null ;
-    selection = SelectionFactory.getSelectionOperator("BinaryTournament2", parameters) ;                           
-
-    // Add the operators to the algorithm
-    algorithm.addOperator("crossover",crossover);
-    algorithm.addOperator("mutation",mutation);
-    algorithm.addOperator("selection",selection);
-
-    // Add the indicator object to the algorithm
-    algorithm.setInputParameter("indicators", indicators) ;
-    
-    // Execute the Algorithm
-    long initTime = System.currentTimeMillis();
-    SolutionSet population = algorithm.execute();
-    long estimatedTime = System.currentTimeMillis() - initTime;
-    
-    // Result messages 
-    logger_.info("Total execution time: "+estimatedTime + "ms");
-    logger_.info("Variables values have been writen to file VAR");
-    population.printVariablesToFile("VAR");    
-    logger_.info("Objectives values have been writen to file FUN");
-    population.printObjectivesToFile("FUN");
-  
-    if (indicators != null) {
-      logger_.info("Quality indicators") ;
-      logger_.info("Hypervolume: " + indicators.getHypervolume(population)) ;
-      logger_.info("GD         : " + indicators.getGD(population)) ;
-      logger_.info("IGD        : " + indicators.getIGD(population)) ;
-      logger_.info("Spread     : " + indicators.getSpread(population)) ;
-      logger_.info("Epsilon    : " + indicators.getEpsilon(population)) ;  
      
-      int evaluations = ((Integer)algorithm.getOutputParameter("evaluations")).intValue();
-      logger_.info("Speed      : " + evaluations + " evaluations") ;      
-    } // if
+    int j = 0;
+    
+    double pc = 0;
+    double pm = 0;
+    int tp = 0;
+    
+    String instance_name = "instancia1.config";
+    String pareto_front = "front1.FUN";
+    
+    // Configuracion parametricas, cambiar la variable j 
+    
+    if ( j== 0){
+        pc = 0.6;
+        pm = 0.03;
+        tp = 100;
+    }
+    else if(j== 1){
+        pc = 0.6;
+        pm = 0.03;
+        tp = 150;
+    }
+    else if(j== 2){
+        pc = 0.9;
+        pm = 0.03;
+        tp = 100;
+    }
+    else if(j== 3){
+        pc = 0.9;
+        pm = 0.03;
+        tp = 150;
+    }
+    else if(j== 4){
+        pc = 0.6;
+        pm = 0.07;
+        tp = 100;
+    }
+    else if(j== 5){
+        pc = 0.6;
+        pm = 0.07;
+        tp = 150;
+    }
+    else if(j== 6){
+        pc = 0.9;
+        pm = 0.07;
+        tp = 100;
+    }
+    else if(j== 7){
+        pc = 0.9;
+        pm = 0.03;
+        tp = 150;
+    } 
+    
+    PrintWriter out = new PrintWriter("Configuracion" + j + "-Indicadores");
+    
+    
+    // Cantidad de ejecuciones
+    for (int i = 0; i < 1 ; i++){
+    
+        Problem   problem   ; // The problem to solve
+        Algorithm algorithm ; // The algorithm to use
+        Operator  crossover ; // Crossover operator
+        Operator  mutation  ; // Mutation operator
+        Operator  selection ; // Selection operator
+
+        HashMap  parameters ; // Operator parameters
+
+        QualityIndicator indicators ; // Object to get quality indicators
+
+        // Logger object and file to store log messages
+        logger_      = Configuration.logger_ ;
+        fileHandler_ = new FileHandler("NSGAII_main.log"); 
+        logger_.addHandler(fileHandler_) ;
+        
+        // Problema con path a la isntancia a evaluar
+        problem = new PlanningProblem(instance_name);
+        
+        // Indicador con path al archivo con frentes de pareto
+        indicators = new QualityIndicator(problem,pareto_front) ;
+
+        algorithm = new NSGAII(problem);
+
+        // Algorithm parameters
+        algorithm.setInputParameter("populationSize",tp);
+        algorithm.setInputParameter("maxEvaluations",tp*10000);
+
+        // Mutation and Crossover for Real codification 
+        parameters = new HashMap() ;
+        parameters.put("probability", pc) ;
+        parameters.put("distributionIndex", 20.0) ;
+        crossover = CrossoverFactory.getCrossoverOperator("SinglePointCrossover", parameters);                   
+
+        parameters = new HashMap() ;
+        parameters.put("probability", pm) ;
+        parameters.put("distributionIndex", 20.0) ;
+        mutation = MutationFactory.getMutationOperator("BitFlipMutation", parameters);                    
+
+        // Selection Operator 
+        parameters = null ;
+        selection = SelectionFactory.getSelectionOperator("BinaryTournament2", parameters) ;                           
+
+        // Add the operators to the algorithm
+        algorithm.addOperator("crossover",crossover);
+        algorithm.addOperator("mutation",mutation);
+        algorithm.addOperator("selection",selection);
+
+        // Add the indicator object to the algorithm
+        algorithm.setInputParameter("indicators", indicators) ;
+
+        // Execute the Algorithm
+        long initTime = System.currentTimeMillis();
+        SolutionSet population = algorithm.execute();
+        long estimatedTime = System.currentTimeMillis() - initTime;
+
+        Date date = new Date() ;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss.SSS");
+        String actualDate = dateFormat.format(date);
+
+        // Result messages 
+        logger_.info("Total execution time: "+estimatedTime + "ms");
+        logger_.info("Variables values have been writen to file VAR");
+        population.printVariablesToFile("Configuracion" + j + "-" + actualDate + ".VAR");    
+        logger_.info("Objectives values have been writen to file FUN");
+        population.printObjectivesToFile("Configuracion" + j + "-" + actualDate + ".FUN");
+
+        if (indicators != null) {
+            
+          double hv = indicators.getHypervolume(population);
+          double gd = indicators.getGD(population);
+          double igd = indicators.getIGD(population);
+          double spread = indicators.getSpread(population);
+          double eps = indicators.getEpsilon(population);
+            
+            
+          logger_.info("Quality indicators") ;
+          logger_.info("Hypervolume: " + hv) ;
+          logger_.info("GD         : " + gd) ;
+          logger_.info("IGD        : " + igd) ;
+          logger_.info("Spread     : " + spread) ;
+          logger_.info("Epsilon    : " + eps) ;  
+
+          int evaluations = ((Integer)algorithm.getOutputParameter("evaluations")).intValue();
+          logger_.info("Speed      : " + evaluations + " evaluations") ;   
+          
+          out.println(hv + " " + gd + " " + igd + " " +spread+ " " +eps);
+          
+        } // if
+    
+    } // End for ejecuciones
+    out.close();
   } //main
 } // NSGAII_main
