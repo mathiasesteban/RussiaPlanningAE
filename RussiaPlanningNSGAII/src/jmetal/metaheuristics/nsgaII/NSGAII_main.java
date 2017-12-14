@@ -74,7 +74,7 @@ public class NSGAII_main {
                                   IOException, 
                                   ClassNotFoundException {
      
-    int j = 0;
+    int j = 7;
     
     double pc = 0;
     double pm = 0;
@@ -122,7 +122,7 @@ public class NSGAII_main {
     }
     else if(j== 7){
         pc = 0.9;
-        pm = 0.03;
+        pm = 0.07;
         tp = 150;
     } 
     
@@ -130,7 +130,7 @@ public class NSGAII_main {
     
     
     // Cantidad de ejecuciones
-    for (int i = 0; i < 1 ; i++){
+    for (int i = 0; i < 20 ; i++){
     
         Problem   problem   ; // The problem to solve
         Algorithm algorithm ; // The algorithm to use
