@@ -86,7 +86,7 @@ public class NSGAIIStudy extends Experiment {
         // todos los algoritmos
         Problem problem = null;
         try {
-            problem = new PlanningProblem("instancia2.config");
+            problem = new PlanningProblem("datos.config");
         }
         catch (FileNotFoundException ex) {
             Logger.getLogger(NSGAIIStudy.class.getName()).log(Level.SEVERE, null, ex);
@@ -217,7 +217,7 @@ public class NSGAIIStudy extends Experiment {
     
     // Path al directorio donde se desea tener los resultados del experimento
     exp.experimentBaseDirectory_ = 
-        "/home/mathias/Documents/RussiaPlanningAE/RussiaPlanningNSGAII/" +
+        "/home/mathias/Documentos/RussiaPlanningAE/RussiaPlanningNSGAII/" +
         exp.experimentName_;
     
 

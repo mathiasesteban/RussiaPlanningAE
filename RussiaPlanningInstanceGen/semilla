@@ -1,5 +1,5 @@
 # NumeroVariables
-150
+70
 # TiposEntradas
 3
 # Rango precios entradas
@@ -15,8 +15,8 @@
 # Peso de la cantidad de partidos sobre el puntaje de la solucion (valor / 10)
 3
 # Rango de horas entre fechas de eventos consecutivos
-3 72
+6 72
 # Rango de costos de viaje
-100 500
+200 500
 # Rango de tiempo de viaje
 2 12
