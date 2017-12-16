@@ -21,11 +21,13 @@
 
 package jmetal.problems;
 
+import java.io.FileNotFoundException;
 import jmetal.core.Problem;
 import jmetal.util.Configuration;
 import jmetal.util.JMException;
 
 import java.lang.reflect.Constructor;
+import planningrusia.PlanningProblem;
 
 /**
  * This class represents a factory for problems
@@ -38,7 +40,7 @@ public class ProblemFactory {
    * @return The object representing the problem
    * @throws JMException 
    */
-  public Problem getProblem(String name, Object [] params) throws JMException {
+  public Problem getProblem(String name, Object [] params) throws JMException, FileNotFoundException {
     // Params are the arguments
     // The number of argument must correspond with the problem constructor params
 
@@ -65,20 +67,25 @@ public class ProblemFactory {
         base += "ZZJ07.";    
     else if (name.substring(0,name.length()-3).equalsIgnoreCase("LZ06"))
       base += "LZ06.";
-
+    else
+      base += "PlanningProblem";
+    
     try {
-      Class problemClass = Class.forName(base+name);
+      /*Class problemClass = Class.forName(base+name);
       Constructor [] constructors = problemClass.getConstructors();
       int i = 0;
       //find the constructor
       while ((i < constructors.length) && 
              (constructors[i].getParameterTypes().length!=params.length)) {
         i++;
-      }
+      }*/
       // constructors[i] is the selected one constructor
-      Problem problem = (Problem)constructors[i].newInstance(params);
+      //Problem problem = (Problem)constructors[i].newInstance(params);
+      
+      Problem problem = new PlanningProblem("instancia1.config");
       return problem;      
-    }// try
+      
+    }// try// try
     catch(Exception e) {
       Configuration.logger_.severe("ProblemFactory.getProblem: " +
           "Problem '"+ name + "' does not exist. "  +
