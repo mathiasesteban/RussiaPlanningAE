@@ -102,10 +102,10 @@ public class NSGAIIStudy extends Experiment {
             algorithm[i] = new NSGAII(problem);
           
           
-            double pc = 0;
-            double pm = 0;
-            int tp = 0;
-
+            double pc = 0.9;
+            double pm = 0.03;
+            int tp = 150;
+            /*
             if ( i== 0){
                pc = 0.6;
                pm = 0.03;
@@ -145,7 +145,7 @@ public class NSGAIIStudy extends Experiment {
                 pc = 0.9;
                 pm = 0.07;
                 tp = 100;
-            } 
+            } */
                  
             HashMap  parameters2 ; 
             parameters2 = new HashMap() ;
@@ -195,8 +195,7 @@ public class NSGAIIStudy extends Experiment {
     // correr, los resultados se guardaran en carpetas con los nombres aqui 
     // especificados
     exp.algorithmNameList_   = new String[] {
-      "Configuracion1", "Configuracion2", "Configuracion3", "Configuracion4",
-      "Configuracion5","Configuracion6","Configuracion7","Configuracion8"} ;
+      "Rusia2018"} ;
     
     // Lista de problemas a ejecutar, es MUY IMPORTANTE setear correctamente los
     // nombres porque Factory los tiene parseados, en caso de ser un problema
@@ -227,7 +226,7 @@ public class NSGAIIStudy extends Experiment {
     exp.algorithmSettings_ = new Settings[numberOfAlgorithms] ;
     
     // Numero de ejecuciones independientes que se desean realizar
-    exp.independentRuns_ = 20 ;
+    exp.independentRuns_ = 50 ;
 
     
     // Inicializar el experimento
