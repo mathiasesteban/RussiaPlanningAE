@@ -21,6 +21,7 @@
 
 package jmetal.experiments.settings;
 
+import java.io.FileNotFoundException;
 import jmetal.core.Algorithm;
 import jmetal.experiments.Settings;
 import jmetal.metaheuristics.randomSearch.RandomSearch;
@@ -41,7 +42,7 @@ public class RandomSearch_Settings extends Settings {
    * Constructor
    * @param problem Problem to solve
    */
-  public RandomSearch_Settings(String problem) {
+  public RandomSearch_Settings(String problem) throws FileNotFoundException {
     super(problem);
     
     Object [] problemParams = {"Real"};

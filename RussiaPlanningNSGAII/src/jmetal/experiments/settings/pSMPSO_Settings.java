@@ -20,6 +20,7 @@
 
 package jmetal.experiments.settings;
 
+import java.io.FileNotFoundException;
 import jmetal.core.Algorithm;
 import jmetal.experiments.Settings;
 import jmetal.metaheuristics.smpso.pSMPSO;
@@ -48,7 +49,7 @@ public class pSMPSO_Settings extends Settings{
   /**
    * Constructor
    */
-  public pSMPSO_Settings(String problem) {
+  public pSMPSO_Settings(String problem) throws FileNotFoundException {
     super(problem) ;
     
     Object [] problemParams = {"Real"};

@@ -21,6 +21,7 @@
 
 package jmetal.experiments.settings;
 
+import java.io.FileNotFoundException;
 import jmetal.core.Algorithm;
 import jmetal.core.Operator;
 import jmetal.experiments.Settings;
@@ -33,6 +34,8 @@ import jmetal.util.JMException;
 
 import java.util.HashMap;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Settings class of algorithm GDE3
@@ -46,7 +49,7 @@ public class GDE3_Settings extends Settings {
   /**
    * Constructor
    */
-  public GDE3_Settings(String problemName) {
+  public GDE3_Settings(String problemName) throws FileNotFoundException {
     super(problemName);
     
     Object [] problemParams = {"Real"};
@@ -78,7 +81,11 @@ public class GDE3_Settings extends Settings {
 
     // Creating the problem
     Object [] problemParams = {"Real"};
-    problem_ = (new ProblemFactory()).getProblem(problemName_, problemParams);      
+      try {      
+          problem_ = (new ProblemFactory()).getProblem(problemName_, problemParams);
+      } catch (FileNotFoundException ex) {
+          Logger.getLogger(GDE3_Settings.class.getName()).log(Level.SEVERE, null, ex);
+      }
     algorithm = new GDE3(problem_);
 
     // Algorithm parameters

@@ -21,6 +21,7 @@
 
 package jmetal.experiments.settings;
 
+import java.io.FileNotFoundException;
 import jmetal.core.Algorithm;
 import jmetal.core.Operator;
 import jmetal.experiments.Settings;
@@ -51,7 +52,7 @@ public class MOCHC_Settings extends Settings {
   double crossoverProbability_    ;
   double mutationProbability_     ;
 
-  public MOCHC_Settings(String problemName) {
+  public MOCHC_Settings(String problemName) throws FileNotFoundException {
     super(problemName);
 
     Object [] problemParams = {"Binary"};

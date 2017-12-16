@@ -21,6 +21,7 @@
 
 package jmetal.experiments.settings;
 
+import java.io.FileNotFoundException;
 import jmetal.core.Algorithm;
 import jmetal.core.Operator;
 import jmetal.experiments.Settings;
@@ -56,7 +57,7 @@ public class IBEA_Settings extends Settings {
 	/**
 	 * Constructor
 	 */
-	public IBEA_Settings(String problemName) {
+	public IBEA_Settings(String problemName) throws FileNotFoundException {
 		super(problemName) ;
 
 		Object [] problemParams = {"Real"};

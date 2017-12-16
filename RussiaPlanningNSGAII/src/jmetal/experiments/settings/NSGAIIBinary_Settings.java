@@ -21,6 +21,7 @@
 
 package jmetal.experiments.settings;
 
+import java.io.FileNotFoundException;
 import jmetal.core.Algorithm;
 import jmetal.core.Operator;
 import jmetal.experiments.Settings;
@@ -51,7 +52,7 @@ public class NSGAIIBinary_Settings extends Settings {
   /**
    * Constructor
    */
-  public NSGAIIBinary_Settings(String problem) {
+  public NSGAIIBinary_Settings(String problem) throws FileNotFoundException {
     super(problem) ;
     
     Object [] problemParams = {"Binary"};

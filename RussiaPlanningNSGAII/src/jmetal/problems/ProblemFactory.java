@@ -82,7 +82,7 @@ public class ProblemFactory {
       // constructors[i] is the selected one constructor
       //Problem problem = (Problem)constructors[i].newInstance(params);
       
-      Problem problem = new PlanningProblem("instancia1.config");
+      Problem problem = new PlanningProblem("instancia2.config");
       return problem;      
       
     }// try// try

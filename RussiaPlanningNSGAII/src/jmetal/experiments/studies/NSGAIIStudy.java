@@ -86,7 +86,7 @@ public class NSGAIIStudy extends Experiment {
         // todos los algoritmos
         Problem problem = null;
         try {
-            problem = new PlanningProblem("instancia1.config");
+            problem = new PlanningProblem("instancia2.config");
         }
         catch (FileNotFoundException ex) {
             Logger.getLogger(NSGAIIStudy.class.getName()).log(Level.SEVERE, null, ex);
@@ -151,7 +151,7 @@ public class NSGAIIStudy extends Experiment {
             parameters2 = new HashMap() ;
             
             algorithm[i].setInputParameter("populationSize",tp);
-            algorithm[i].setInputParameter("maxEvaluations",tp*100);
+            algorithm[i].setInputParameter("maxEvaluations",tp*10000);
 
             // Mutation and Crossover for Real codification 
             
@@ -217,7 +217,7 @@ public class NSGAIIStudy extends Experiment {
     
     // Path al directorio donde se desea tener los resultados del experimento
     exp.experimentBaseDirectory_ = 
-        "/home/mathias/Documentos/RussiaPlanningAE/RussiaPlanningNSGAII/" +
+        "/home/mathias/Documents/RussiaPlanningAE/RussiaPlanningNSGAII/" +
         exp.experimentName_;
     
 
@@ -227,7 +227,7 @@ public class NSGAIIStudy extends Experiment {
     exp.algorithmSettings_ = new Settings[numberOfAlgorithms] ;
     
     // Numero de ejecuciones independientes que se desean realizar
-    exp.independentRuns_ = 10 ;
+    exp.independentRuns_ = 20 ;
 
     
     // Inicializar el experimento

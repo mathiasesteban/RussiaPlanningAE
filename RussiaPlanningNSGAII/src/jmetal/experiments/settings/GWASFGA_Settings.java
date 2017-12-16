@@ -20,6 +20,7 @@
 
 package jmetal.experiments.settings;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 
 import jmetal.metaheuristics.gwasfga.*;
@@ -59,7 +60,7 @@ public class GWASFGA_Settings extends Settings {
    * Constructor
    * @throws JMException 
    */
-  public GWASFGA_Settings(String problem) throws JMException {
+  public GWASFGA_Settings(String problem) throws JMException, FileNotFoundException {
     super(problem) ;
     String paretoFrontDirectory = new String("/Users/ajnebro/Softw/jMetal/jMetalWeb/jMetalWeb/paretoFronts/");   
     

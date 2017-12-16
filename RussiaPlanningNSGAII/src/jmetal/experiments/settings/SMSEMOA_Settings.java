@@ -21,6 +21,7 @@
 
 package jmetal.experiments.settings;
 
+import java.io.FileNotFoundException;
 import jmetal.core.Algorithm;
 import jmetal.experiments.Settings;
 import jmetal.metaheuristics.smsemoa.SMSEMOA;
@@ -51,7 +52,7 @@ public class SMSEMOA_Settings extends Settings {
   /**
    * Constructor
    */
-  public SMSEMOA_Settings(String problem) {
+  public SMSEMOA_Settings(String problem) throws FileNotFoundException {
     super(problem) ;
     
     Object [] problemParams = {"Real"};

@@ -21,6 +21,7 @@
 
 package jmetal.experiments.settings;
 
+import java.io.FileNotFoundException;
 import jmetal.core.Algorithm;
 import jmetal.core.Operator;
 import jmetal.experiments.Settings;
@@ -55,7 +56,7 @@ public class AbYSS_Settings extends Settings {
    * Constructor
    * @param problemName Problem to solve
    */
-  public AbYSS_Settings(String problemName) {
+  public AbYSS_Settings(String problemName) throws FileNotFoundException {
     super(problemName);
 
     Object [] problemParams = {"Real"};

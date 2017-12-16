@@ -21,6 +21,7 @@
 
 package jmetal.experiments.settings;
 
+import java.io.FileNotFoundException;
 import jmetal.core.Algorithm;
 import jmetal.experiments.Settings;
 import jmetal.metaheuristics.dmopso.dMOPSO;
@@ -42,7 +43,7 @@ public class dMOPSO_Settings extends Settings {
 	/**
 	 * Constructor
 	 */
-	public dMOPSO_Settings(String problem) {
+	public dMOPSO_Settings(String problem) throws FileNotFoundException {
 		super(problem);
 
 		Object [] problemParams = {"Real"};

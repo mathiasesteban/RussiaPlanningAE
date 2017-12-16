@@ -1,5 +1,6 @@
 package jmetal.experiments.settings;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 
 import jmetal.metaheuristics.wasfga.WASFGA;
@@ -40,7 +41,7 @@ public class WASFGA_Settings extends Settings {
    * Constructor
    * @throws JMException 
    */
-  public WASFGA_Settings(String problem) throws JMException {
+  public WASFGA_Settings(String problem) throws JMException, FileNotFoundException {
     super(problem) ;
     String paretoFrontDirectory = new String("data/paretoFronts/");
     

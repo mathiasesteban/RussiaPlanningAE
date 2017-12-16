@@ -20,6 +20,7 @@
 
 package jmetal.experiments.settings;
 
+import java.io.FileNotFoundException;
 import jmetal.core.Algorithm;
 import jmetal.experiments.Settings;
 import jmetal.metaheuristics.nsgaII.pNSGAII;
@@ -52,7 +53,7 @@ public class pNSGAII_Settings extends Settings {
   /**
    * Constructor
    */
-  public pNSGAII_Settings(String problem) {
+  public pNSGAII_Settings(String problem) throws FileNotFoundException {
     super(problem) ;
     
     Object [] problemParams = {"Real"};

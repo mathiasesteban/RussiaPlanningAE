@@ -21,6 +21,7 @@
 
 package jmetal.experiments.settings;
 
+import java.io.FileNotFoundException;
 import jmetal.core.Algorithm;
 import jmetal.core.Operator;
 import jmetal.experiments.Settings;
@@ -58,7 +59,7 @@ public class MOEAD_DRA_Settings extends Settings {
   /**
    * Constructor
    */
-  public MOEAD_DRA_Settings(String problem) {
+  public MOEAD_DRA_Settings(String problem) throws FileNotFoundException {
     super(problem);
     
     Object [] problemParams = {"Real"};

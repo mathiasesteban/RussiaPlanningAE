@@ -21,6 +21,7 @@
 
 package jmetal.experiments.studies;
 
+import java.io.FileNotFoundException;
 import jmetal.core.Algorithm;
 import jmetal.experiments.Experiment;
 import jmetal.experiments.Settings;
@@ -62,11 +63,26 @@ public class ConstrainedProblemsStudy extends Experiment {
         for (int i = 0; i < numberOfAlgorithms; i++) 
           parameters[i].put("paretoFrontFile_", paretoFrontFile_[problemIndex]);
         } // if
-
-        algorithm[0] = new NSGAII_Settings(problemName).configure(parameters[0]);
-        algorithm[1] = new SPEA2_Settings(problemName).configure(parameters[1]);
-        algorithm[2] = new MOCell_Settings(problemName).configure(parameters[2]);
-        algorithm[3] = new AbYSS_Settings(problemName).configure(parameters[3]);
+        try {
+            algorithm[0] = new NSGAII_Settings(problemName).configure(parameters[0]);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ConstrainedProblemsStudy.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            algorithm[1] = new SPEA2_Settings(problemName).configure(parameters[1]);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ConstrainedProblemsStudy.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            algorithm[2] = new MOCell_Settings(problemName).configure(parameters[2]);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ConstrainedProblemsStudy.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            algorithm[3] = new AbYSS_Settings(problemName).configure(parameters[3]);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ConstrainedProblemsStudy.class.getName()).log(Level.SEVERE, null, ex);
+        }
       } catch (IllegalArgumentException ex) {
       Logger.getLogger(ConstrainedProblemsStudy.class.getName()).log(Level.SEVERE, null, ex);
     } catch (IllegalAccessException ex) {

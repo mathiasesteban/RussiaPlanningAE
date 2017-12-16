@@ -20,6 +20,7 @@
 
 package jmetal.experiments.settings;
 
+import java.io.FileNotFoundException;
 import jmetal.core.Algorithm;
 import jmetal.experiments.Settings;
 import jmetal.metaheuristics.nsgaII.NSGAIIAdaptive;
@@ -56,7 +57,7 @@ public class NSGAIIAdaptive_Settings extends Settings {
    * Constructor
    * @throws JMException 
    */
-  public NSGAIIAdaptive_Settings(String problem) throws JMException {
+  public NSGAIIAdaptive_Settings(String problem) throws JMException, FileNotFoundException {
     super(problem) ;
     
     Object [] problemParams = {"Real"};

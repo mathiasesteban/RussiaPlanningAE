@@ -17,6 +17,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package jmetal.experiments.settings;
 
+import java.io.FileNotFoundException;
 import jmetal.core.Algorithm;
 import jmetal.core.Operator;
 import jmetal.experiments.Settings;
@@ -57,7 +58,7 @@ public class pMOEAD_Settings extends Settings {
   /**
    * Constructor
    */
-  public pMOEAD_Settings(String problem) {
+  public pMOEAD_Settings(String problem) throws FileNotFoundException {
     super(problem);
 
     Object[] problemParams = {"Real"};

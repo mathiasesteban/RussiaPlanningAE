@@ -21,6 +21,7 @@
 
 package jmetal.experiments.settings;
 
+import java.io.FileNotFoundException;
 import jmetal.core.Algorithm;
 import jmetal.core.Operator;
 import jmetal.experiments.Settings;
@@ -53,7 +54,7 @@ public class SPEA2_Settings extends Settings {
   /**
    * Constructor
    */
-  public SPEA2_Settings(String problem) {
+  public SPEA2_Settings(String problem) throws FileNotFoundException {
     super(problem) ;
     
     Object [] problemParams = {"Real"};
