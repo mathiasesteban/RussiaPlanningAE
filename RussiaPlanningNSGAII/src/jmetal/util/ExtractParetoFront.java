@@ -187,7 +187,7 @@ public class ExtractParetoFront {
 		}
 
 		ExtractParetoFront epf = new ExtractParetoFront(args[0], new Integer(args[1]));*/
-                ExtractParetoFront epf = new ExtractParetoFront("front", 2);
+                ExtractParetoFront epf = new ExtractParetoFront("FUN.Greedy2", 2);
 
 
 		epf.writeParetoFront();

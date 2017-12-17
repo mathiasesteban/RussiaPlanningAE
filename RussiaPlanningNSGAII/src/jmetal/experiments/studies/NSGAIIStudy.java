@@ -151,7 +151,7 @@ public class NSGAIIStudy extends Experiment {
             parameters2 = new HashMap() ;
             
             algorithm[i].setInputParameter("populationSize",tp);
-            algorithm[i].setInputParameter("maxEvaluations",tp*10000);
+            algorithm[i].setInputParameter("maxEvaluations",tp*50000);
 
             // Mutation and Crossover for Real codification 
             

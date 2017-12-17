@@ -17,18 +17,33 @@ import java.util.Calendar;
  */
 public class RussiaPlanningGreedy_main {
     
-    public static void main(String [] args) throws FileNotFoundException 
+    private int [] solucion;
+    private float puntajeFinal;
+    private float costoFinal;
+    private PlanningProblem prob;
+    
+    
+    public RussiaPlanningGreedy_main() throws FileNotFoundException
     {
-        PlanningProblem prob = new PlanningProblem("datos.config");
+       this.prob = new PlanningProblem("datos.config");
+       this.solucion = null;
+       this.costoFinal = 0;
+       this.puntajeFinal = 0;   
+    }
+    
+    public void main(float criterio) throws FileNotFoundException 
+    {
         int tamSolucion = prob.getTamanioSolucion();
         int [] solucion = new int[tamSolucion];
         for (int i=0; i < tamSolucion ; i++){
             solucion[i]=0;
         }
-        int AcPuntaje = 0;
-        int AcCosto = 0;
+        float AcPuntaje = 0;
+        float AcCosto = 0;
         int indiceAnt = -1;
         int [] aux;
+        double costo = 0;
+        double puntaje = 0;
         for (int i=0; i < tamSolucion; i++){
             if (indiceAnt == -1){
                 indiceAnt = i;
@@ -39,42 +54,35 @@ public class RussiaPlanningGreedy_main {
             }
             else{
                 if (checkFecha(prob,indiceAnt,i)){
-                    boolean rinde = false;
-                    double costoFin = 0;
-                    double puntajeFin = 0;
                     for (int j=1; j <= 3; j++){
-                       aux = solucion;
+                       aux = Arrays.copyOf(solucion,tamSolucion);
                        aux[i]=j;
-                       double costo = evaluacion_costo(prob,aux);
-                       double puntaje = evaluacion_puntaje(prob,aux);
+                       costo = evaluacion_costo(prob,aux);
+                       puntaje = evaluacion_puntaje(prob,aux);
                        if (AcCosto > 0){
-                           float relacionCosto = (float)costo/AcCosto;
-                           float relacionPuntaje = (float)puntaje/AcPuntaje;
-                           float criterio = prob.getCriterio()/100;
-                           System.out.println("arranca criterio" + j);
-                           System.out.println(relacionCosto);
-                           System.out.println(relacionPuntaje);
-                           if ( abs(relacionPuntaje - relacionCosto) >= criterio){
-                               if (!rinde){
-                                   rinde = true;
-                               }
+                           float relacionCosto = (float)(AcCosto/costo)*100;
+                           float relacionPuntaje = (float)(AcPuntaje/puntaje)*100;
+//                           System.out.println("arranca criterio" + j);
+//                           System.out.println(criterio);
+//                           System.out.println(costo);
+//                           System.out.println(puntaje);
+//                           System.out.println(relacionCosto);
+//                           System.out.println(relacionPuntaje);
+                           if( abs(relacionPuntaje - relacionCosto) >= criterio){
+                               indiceAnt = i;
                                solucion[i]=j;
-                               costoFin = costo;
-                               puntajeFin = puntaje;
-                           }
-                       }
-                       
-//                       else{
-//                           AcCosto+= costo;
-//                           AcPuntaje+= puntaje;
-//                           
-//                       }
+                               AcCosto = (int)costo;
+                               AcPuntaje = (int)puntaje;
+                            }
+                        }
+//                       
+////                       else{
+////                           AcCosto+= costo;
+////                           AcPuntaje+= puntaje;
+////                           
+////                       }
                     }
-                    if (rinde){
-                        indiceAnt = i;
-                        AcCosto+= costoFin;
-                        AcPuntaje+= puntajeFin;
-                    }
+                    
                 } 
             }
         }
@@ -83,9 +91,13 @@ public class RussiaPlanningGreedy_main {
         // para cada iteracion si puedo ir pruebo con todos los tipos de entrada y si cumplo el criterio actulizo
         // y voy acutlizando el arreglo pero tambien llevando un arreglo auxiliar para ir probando
         //todas las evaluaciones que ya tengo
-        for(int i = 0; i< tamSolucion; i++){
-            System.out.println(solucion[i]);
-        }
+//        System.out.println("solucion");
+//        
+//        System.out.println("");
+        this.solucion = solucion;
+        this.costoFinal = (float) costo;
+        this.puntajeFinal = (float) puntaje;
+
     }
 
     
@@ -130,7 +142,7 @@ public class RussiaPlanningGreedy_main {
         for (int i = 0; i < prob.getTamanioSolucion();i++){ 
             
             if(solucion[i] != 0){
-                costo += costo_entrada[i][solucion[i]-1];
+                costo += costo_entrada[i][3-solucion[i]];
                 
                 if(last_index != -1){
                     costo += eval_costo_estadia(prob,i,last_index);
@@ -194,4 +206,17 @@ public class RussiaPlanningGreedy_main {
       return puntaje;        
     } // Fin evaluacion_puntaje
     
+    public float getCostoFinal()
+    {
+        return this.costoFinal;
+    }
+    
+    public float getPuntajeFinal()
+    {
+        return this.puntajeFinal;
+    }
+    
+    public int [] getSolucion(){
+        return this.solucion;
+    }
 }   //fin falso greedy
